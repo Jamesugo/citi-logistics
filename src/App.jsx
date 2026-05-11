@@ -5,8 +5,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import SearchResults from './pages/SearchResults';
 import CompanyProfile from './pages/CompanyProfile';
-import DeliveryRequest from './pages/DeliveryRequest';
 import Dashboard from './pages/Dashboard';
+import Tracking from './pages/Tracking';
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -37,8 +37,9 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/company/:id" element={<CompanyProfile />} />
-          <Route path="/request" element={<DeliveryRequest />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/track" element={<Tracking />} />
+          <Route path="/track/:id" element={<Tracking />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />

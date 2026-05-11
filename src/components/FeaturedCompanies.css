@@ -134,18 +134,32 @@
   margin-left: 0.25rem;
 }
 
+.card-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
 .view-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--primary-light);
-  transition: transform 0.2s;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: all 0.2s;
 }
 
 .view-btn:hover {
-  transform: translateX(4px);
+  color: var(--primary-light);
+  transform: translateX(2px);
+}
+
+.btn-xs {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  font-weight: 800;
 }
 
 .section-footer {

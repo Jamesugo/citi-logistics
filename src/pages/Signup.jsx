@@ -16,7 +16,7 @@ const Signup = () => {
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Full name is required';
+    if (form.role === 'customer' && !form.name.trim()) e.name = 'Full name is required';
     if (!form.email) e.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Enter a valid email';
     if (!form.password) e.password = 'Password is required';
@@ -40,7 +40,7 @@ const Signup = () => {
     setLoading(true);
     setTimeout(() => {
       const userData = {
-        name: form.name,
+        name: form.role === 'provider' ? form.companyName : form.name,
         email: form.email,
         role: form.role,
         companyName: form.companyName,
@@ -123,16 +123,27 @@ const Signup = () => {
           <div className="auth-divider"><span>Enter your details</span></div>
 
           <form onSubmit={handleSubmit} noValidate>
-            <div className="form-row-half">
-              <div className="form-field">
-                <label>Contact Name</label>
-                <div className={`field-input ${errors.name ? 'error' : ''}`}>
-                  <User size={18} />
-                  <input type="text" placeholder="John Doe" value={form.name} onChange={set('name')} />
+            {form.role === 'customer' ? (
+              <div className="form-row-half">
+                <div className="form-field">
+                  <label>Contact Name</label>
+                  <div className={`field-input ${errors.name ? 'error' : ''}`}>
+                    <User size={18} />
+                    <input type="text" placeholder="John Doe" value={form.name} onChange={set('name')} />
+                  </div>
+                  {errors.name && <span className="field-error">{errors.name}</span>}
                 </div>
-                {errors.name && <span className="field-error">{errors.name}</span>}
-              </div>
 
+                <div className="form-field">
+                  <label>Email Address</label>
+                  <div className={`field-input ${errors.email ? 'error' : ''}`}>
+                    <Mail size={18} />
+                    <input type="email" placeholder="you@company.com" value={form.email} onChange={set('email')} />
+                  </div>
+                  {errors.email && <span className="field-error">{errors.email}</span>}
+                </div>
+              </div>
+            ) : (
               <div className="form-field">
                 <label>Email Address</label>
                 <div className={`field-input ${errors.email ? 'error' : ''}`}>
@@ -141,7 +152,7 @@ const Signup = () => {
                 </div>
                 {errors.email && <span className="field-error">{errors.email}</span>}
               </div>
-            </div>
+            )}
 
             {form.role === 'provider' && (
               <div className="provider-fields animate-fade">

@@ -216,6 +216,37 @@
 
 .result-card {
   padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.btn-whatsapp-sm {
+  background: #25D366;
+  color: white !important;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.15);
+}
+
+.btn-whatsapp-sm:hover {
+  background: #20ba5a;
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(37, 211, 102, 0.25);
 }
 
 .result-top {

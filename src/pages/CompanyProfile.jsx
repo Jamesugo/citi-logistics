@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Star, MapPin, Truck, ShieldCheck, Globe, Clock, CheckCircle, Zap, Box, ArrowLeft } from 'lucide-react';
+import { 
+  Star, MapPin, Truck, ShieldCheck, Globe, Clock, 
+  CheckCircle, Zap, Box, ArrowLeft, Mail, Phone, MessageCircle 
+} from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { getCompanies } from '../data/companies';
 import './CompanyProfile.css';
 
 const CompanyProfile = () => {
@@ -8,14 +12,9 @@ const CompanyProfile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('Overview');
   
-  // Mock companies for the profile
-  const companies = {
-    "1": { name: 'Swift Logistics', rating: 4.9, location: 'UK-Wide', image: 'https://images.unsplash.com/photo-1598128558393-70ff21433be0' },
-    "2": { name: 'Global Express', rating: 4.7, location: 'International', image: 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8' },
-    "default": { name: 'FastShip Logistics', rating: 4.8, location: 'North America', image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d' }
-  };
-
-  const company = companies[id] || companies["default"];
+  // Fetch real data
+  const allCompanies = getCompanies();
+  const company = allCompanies.find(c => String(c.id) === String(id)) || allCompanies[0];
 
   return (
     <div className="profile-page animate-fade">
@@ -29,10 +28,10 @@ const CompanyProfile = () => {
       <header className="profile-header container">
         <div className="profile-header-card card">
           <div className="profile-header-main">
-            <img src={`${company.image}?auto=format&fit=crop&q=80&w=200`} alt={company.name} className="profile-logo" />
+            <img src={company.logo || company.image} alt={company.name} className="profile-logo" />
             <div className="profile-info-text">
               <div className="profile-title-row">
-                <h1>{company.name}</h1>
+                <h1>{company.companyName || company.name}</h1>
                 <div className="verified-tag">
                   <ShieldCheck size={16} fill="#10b981" color="white" />
                   <span>Verified</span>
@@ -46,14 +45,23 @@ const CompanyProfile = () => {
                 </div>
                 <div className="location-row">
                   <MapPin size={18} />
-                  <span>{company.location}</span>
+                  <span>{company.location || 'Nationwide'}</span>
+                </div>
+                <div className="type-row">
+                  <Truck size={18} />
+                  <span>{company.type || 'Standard'}</span>
                 </div>
               </div>
             </div>
-            <div className="profile-header-actions">
-              <button className="request-btn" onClick={() => navigate('/request')}>
-                Request Quote
-              </button>
+            <div className="contact-actions">
+              <a 
+                href={`https://wa.me/${(company.whatsapp || '+2348000000000').replace(/\D/g, '')}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+              >
+                Book Now
+              </a>
             </div>
           </div>
           
@@ -77,11 +85,7 @@ const CompanyProfile = () => {
             <section className="profile-section card">
               <h2>About {company.name}</h2>
               <p className="about-text">
-                {company.name} is a leading provider of logistics and delivery solutions. 
-                With a commitment to speed, safety, and reliability, we handle everything 
-                from small parcels to large freight. Our global network ensures that your 
-                items reach their destination across {company.location} with real-time tracking 
-                and dedicated support.
+                {company.description || `${company.name} is a leading provider of logistics and delivery solutions. With a commitment to speed, safety, and reliability, we handle everything from small parcels to large freight.`}
               </p>
               <div className="feature-grid">
                 <div className="feature-item">
@@ -117,7 +121,14 @@ const CompanyProfile = () => {
                       <strong>{s.name}</strong>
                       <p>{s.desc}</p>
                     </div>
-                    <button className="get-quote-sm">Get Quote</button>
+                    <a 
+                      href={`https://wa.me/${(company.whatsapp || '+2348000000000').replace(/\D/g, '')}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn btn-primary btn-sm"
+                    >
+                      Book Now
+                    </a>
                   </div>
                 ))}
               </div>
@@ -140,6 +151,35 @@ const CompanyProfile = () => {
                   <span className="label">Response Time</span>
                   <strong>{'< 30 mins'}</strong>
                 </div>
+              </div>
+            </section>
+
+            <section className="sidebar-card card">
+              <h3>Contact Details</h3>
+              <div className="sidebar-stats">
+                <div className="sidebar-stat contact-stat">
+                  <div className="contact-label-wrapper">
+                    <Mail size={16} />
+                    <span className="label">Email</span>
+                  </div>
+                  <strong className="contact-value">{company.email || 'contact@company.com'}</strong>
+                </div>
+                <div className="sidebar-stat contact-stat">
+                  <div className="contact-label-wrapper">
+                    <Phone size={16} />
+                    <span className="label">Mobile</span>
+                  </div>
+                  <strong className="contact-value">{company.phone || 'Not provided'}</strong>
+                </div>
+                {company.whatsapp && (
+                  <div className="sidebar-stat contact-stat">
+                    <div className="contact-label-wrapper">
+                      <MessageCircle size={16} />
+                      <span className="label">WhatsApp</span>
+                    </div>
+                    <strong className="contact-value">{company.whatsapp}</strong>
+                  </div>
+                )}
               </div>
             </section>
 

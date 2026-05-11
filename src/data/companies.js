@@ -100,4 +100,17 @@ export const saveProvider = (provider) => {
   return newProvider;
 };
 
+export const updateProvider = (updatedProvider) => {
+  const localData = localStorage.getItem('shipway_providers');
+  if (!localData) return;
+  
+  let providers = JSON.parse(localData);
+  const index = providers.findIndex(p => p.email === updatedProvider.email);
+  
+  if (index !== -1) {
+    providers[index] = { ...providers[index], ...updatedProvider };
+    localStorage.setItem('shipway_providers', JSON.stringify(providers));
+  }
+};
+
 export const COMPANIES = getCompanies();

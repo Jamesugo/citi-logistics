@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   User, Mail, Phone, MessageCircle, Building2, 
-  MapPin, Edit3, Save, X, Camera, Truck, Globe
+  MapPin, Edit3, Save, X, Camera, Truck, Globe, DollarSign
 } from 'lucide-react';
+import { updateProvider } from '../data/companies';
 import './Profile.css';
 
 const Profile = () => {
@@ -34,10 +35,14 @@ const Profile = () => {
     // Simulate API call
     setTimeout(() => {
       localStorage.setItem('shipway_user', JSON.stringify(formData));
+      
+      if (formData.role === 'provider') {
+        updateProvider(formData);
+      }
+      
       setUser(formData);
       setIsEditing(false);
       setLoading(false);
-      // If provider, we should also update the companies list in local storage if we were more thorough
     }, 800);
   };
 
@@ -145,17 +150,35 @@ const Profile = () => {
               </div>
               <div className="form-group">
                 <label>WhatsApp Contact</label>
-                <div className={`input-wrapper ${isEditing ? 'editing' : ''}`}>
-                  <MessageCircle size={18} />
-                  <input 
-                    type="tel" 
-                    name="whatsapp"
-                    placeholder="+234 ..."
-                    value={formData.whatsapp || ''} 
-                    onChange={handleInputChange}
-                    readOnly={!isEditing} 
-                  />
-                </div>
+                {isEditing ? (
+                  <div className="input-wrapper editing">
+                    <MessageCircle size={18} />
+                    <input 
+                      type="tel" 
+                      name="whatsapp"
+                      placeholder="+234 ..."
+                      value={formData.whatsapp || ''} 
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                ) : (
+                  formData.whatsapp ? (
+                    <a 
+                      href={`https://wa.me/${formData.whatsapp.replace(/\D/g, '')}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="whatsapp-btn-link"
+                    >
+                      <MessageCircle size={18} />
+                      <span>Chat on WhatsApp</span>
+                    </a>
+                  ) : (
+                    <div className="input-wrapper">
+                      <MessageCircle size={18} />
+                      <span className="text-muted">Not provided</span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -194,6 +217,19 @@ const Profile = () => {
                       <option value="Same Day">Same Day</option>
                       <option value="Freight">Freight</option>
                     </select>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Starting Price (₦)</label>
+                  <div className={`input-wrapper ${isEditing ? 'editing' : ''}`}>
+                    <DollarSign size={18} />
+                    <input 
+                      type="number" 
+                      name="price"
+                      value={formData.price || ''} 
+                      onChange={handleInputChange}
+                      readOnly={!isEditing} 
+                    />
                   </div>
                 </div>
                 <div className="form-group">

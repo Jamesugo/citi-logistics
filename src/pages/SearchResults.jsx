@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Star, Clock, DollarSign, Filter, Search as SearchIcon, MapPin, ArrowRight, ChevronDown, SlidersHorizontal } from 'lucide-react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { getCompanies } from '../data/companies';
 import './SearchResults.css';
 
 const SearchResults = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const pickup = searchParams.get('pickup') || '';
   const delivery = searchParams.get('delivery') || '';
@@ -149,7 +150,11 @@ const SearchResults = () => {
           <div className="results-grid">
             {filteredResults.length > 0 ? (
               filteredResults.map(result => (
-                <div key={result.id} className="result-card card animate-slide">
+                <div 
+                  key={result.id} 
+                  className="result-card card animate-slide clickable-card"
+                  onClick={() => navigate(`/company/${result.id}`)}
+                >
                   <div className="result-top">
                     <div className="company-info">
                       <div className="logo-box">
@@ -183,9 +188,15 @@ const SearchResults = () => {
                     </div>
                   </div>
                   
-                  <div className="result-footer">
-                    <Link to={`/company/${result.id}`} className="secondary-link">Details</Link>
-                    <Link to="/request" className="btn btn-primary">Book Now</Link>
+                  <div className="result-footer" onClick={(e) => e.stopPropagation()}>
+                    <a 
+                      href={`https://wa.me/${(result.whatsapp || '+2348000000000').replace(/\D/g, '')}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn btn-primary btn-sm"
+                    >
+                      Book Now
+                    </a>
                   </div>
                 </div>
               ))

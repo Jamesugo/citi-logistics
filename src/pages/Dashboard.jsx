@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   LayoutDashboard, Package, Truck, Clock, 
   TrendingUp, MapPin, ChevronRight, 
-  Bell, Settings, Plus
+  Bell, Settings, Plus, Search as SearchIcon
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
@@ -41,9 +41,9 @@ const Dashboard = () => {
             <LayoutDashboard size={20} />
             <span>Overview</span>
           </Link>
-          <Link to="/request" className="nav-item">
+          <Link to="/search" className="nav-item">
             <Plus size={20} />
-            <span>New Request</span>
+            <span>Find Provider</span>
           </Link>
           <div className="nav-group">Account</div>
           <Link to="/profile" className="nav-item">
@@ -74,9 +74,9 @@ const Dashboard = () => {
               <Bell size={20} />
               <span className="badge-dot"></span>
             </button>
-            <Link to="/request" className="btn btn-primary">
-              <Plus size={18} />
-              <span>Create Request</span>
+            <Link to="/search" className="btn btn-primary">
+              <SearchIcon size={18} />
+              <span>Find Services</span>
             </Link>
           </div>
         </header>
@@ -115,7 +115,7 @@ const Dashboard = () => {
                 <tbody>
                   {recentRequests.map((req, i) => (
                     <tr key={i}>
-                      <td><span className="order-id">{req.id}</span></td>
+                      <td><Link to={`/track/${req.id}`} className="order-id-link"><span className="order-id">{req.id}</span></Link></td>
                       <td><strong>{req.company}</strong></td>
                       <td>
                         <div className="route-cell">
@@ -148,11 +148,11 @@ const Dashboard = () => {
                 <h3>Quick Actions</h3>
               </div>
               <div className="quick-actions-list">
-                <button className="action-item">
+                <Link to="/track" className="action-item">
                   <div className="action-icon"><Package size={18} /></div>
                   <span>Track Package</span>
                   <ChevronRight size={16} />
-                </button>
+                </Link>
               </div>
             </div>
           </aside>

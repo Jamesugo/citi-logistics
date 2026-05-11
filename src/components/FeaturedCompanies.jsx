@@ -48,9 +48,19 @@ const FeaturedCompanies = () => {
                   From <strong>₦{company.price.toLocaleString()}</strong>
                 </div>
 
-                <Link to={`/company/${company.id}`} className="view-btn">
-                  Profile <ArrowRight size={16} />
-                </Link>
+                <div className="card-actions-row">
+                  <Link to={`/company/${company.id}`} className="view-btn">
+                    Details
+                  </Link>
+                  <a 
+                    href={`https://wa.me/${(company.whatsapp || '+2348000000000').replace(/\D/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn btn-primary btn-xs"
+                  >
+                    Book Now
+                  </a>
+                </div>
               </div>
             </div>
           ))}

@@ -236,12 +236,24 @@
   font-size: 0.9rem;
 }
 
+.order-id-link {
+  text-decoration: none;
+}
+
+.order-id-link:hover .order-id {
+  background: var(--accent-soft);
+  color: var(--primary-light);
+  transform: translateY(-1px);
+}
+
 .order-id {
+  display: inline-block;
   font-family: monospace;
   background: var(--bg-main);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-weight: 700;
+  transition: all 0.2s;
 }
 
 .route-cell {
